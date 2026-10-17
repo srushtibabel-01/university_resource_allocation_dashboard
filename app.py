@@ -3,7 +3,6 @@
 Run with:  streamlit run app.py
 """
 import html
-import random
 
 import pandas as pd
 import streamlit as st
@@ -124,11 +123,6 @@ def on_generate():
     st.session_state.sample = False
 
 
-def on_random():
-    st.session_state["in_seed"] = random.randint(1, 9999)
-    on_generate()
-
-
 @st.cache_data(show_spinner="Building PDF…")
 def pdf_bytes(items: tuple) -> bytes:
     return build_pdf(generate(dict(items)))
@@ -214,8 +208,6 @@ with st.sidebar:
                         key=f"in_{k}", help=helptext)
     st.button("Generate & Optimise", type="primary", width="stretch", on_click=on_generate,
               help="Runs the whole pipeline again with the values above.")
-    st.button("Randomise Dataset", width="stretch", on_click=on_random,
-              help="Picks a new random dataset ID and runs again.")
     if st.session_state.sample:
         st.button("⬇ Download PDF Report", disabled=True, width="stretch",
                   help="Generate your own results first.", key="pdf_off")
